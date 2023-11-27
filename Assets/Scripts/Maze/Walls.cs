@@ -21,10 +21,10 @@ namespace IlanGreuter.Maze
         public static Walls Empty => new Walls(0);
 
         /// <summary> Check whether there is a wall to this side </summary>
-        public bool IsWallInDirection(Sides side) =>
-            IsWallInDirection((int)side);
+        public bool HasWallInDirection(Sides side) =>
+            HasWallInDirection((int)side);
         
-        private bool IsWallInDirection(int side) =>
+        private bool HasWallInDirection(int side) =>
             (sides & (1 << side)) != 0;
 
         /// <summary> Remove the wall on this side </summary>
@@ -40,19 +40,19 @@ namespace IlanGreuter.Maze
         {
             int count = 0;
             for (int i = 0; i < 4; i++)
-                if (IsWallInDirection(i))
+                if (HasWallInDirection(i))
                     count++;
             return count;
         }
 
         /// <summary> Is this side and the one opposite open? </summary>
-        public bool IsStraight(Sides side) => !IsWallInDirection(side) && !IsWallInDirection((int)Mathf.Repeat((int)side + 2, 4));
+        public bool IsStraight(Sides side) => !HasWallInDirection(side) && !HasWallInDirection((int)Mathf.Repeat((int)side + 2, 4));
         /// <summary> Is this side and a side next to it open </summary>
         public bool IsCorner(Sides side) => IsCornerCW(side) || IsCornerCounterCW(side);
         /// <summary> Is this side and the side next to it (rotating clockwise) open </summary>
-        public bool IsCornerCW(Sides side) => !IsWallInDirection(side) && !IsWallInDirection((int)Mathf.Repeat((int)side + 3, 4));
+        public bool IsCornerCW(Sides side) => !HasWallInDirection(side) && !HasWallInDirection((int)Mathf.Repeat((int)side + 3, 4));
         /// <summary> Is this side and the side next to it (rotating counterclockwise) open </summary>
-        public bool IsCornerCounterCW(Sides side) => !IsWallInDirection(side) && !IsWallInDirection((int)Mathf.Repeat((int)side + 1, 4));
+        public bool IsCornerCounterCW(Sides side) => !HasWallInDirection(side) && !HasWallInDirection((int)Mathf.Repeat((int)side + 1, 4));
 
         /// <summary> Gets the first side that is open (checking counter clockwise) </summary>
         public Sides? GetOpenSide()
@@ -64,7 +64,7 @@ namespace IlanGreuter.Maze
         private int GetOpen()
         {
             for (int i = 0; i < 4; i++)
-                if (!IsWallInDirection(i))
+                if (!HasWallInDirection(i))
                     return i;
             return -1;
         }
@@ -79,10 +79,13 @@ namespace IlanGreuter.Maze
         private int GetClosed()
         {
             for (int i = 0; i < 4; i++)
-                if (IsWallInDirection(i))
+                if (HasWallInDirection(i))
                     return i;
             return -1;
         }
+
+        public static Sides GetOpposite(Sides side)
+            => (Sides)Mathf.Repeat((int)side + 2, 4);
 
         //In this order two opposites will always be 2 apart
         public enum Sides

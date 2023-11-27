@@ -11,16 +11,25 @@ namespace IlanGreuter.Maze
         public readonly int2 Pos;
         /// <summary> The index in the algorithm's list this tile represents </summary>
         public readonly int Index;
+        /// <summary> The tile from which this is accessed. Allows reconstructing paths </summary>
+        public int PreviousTile;
+        /// <summary> This tiles walls </summary>
+        public Walls Walls;
 
-        public Walls Walls { get; private set; }
-
-        public MazeTile(int2 pos, int index, Walls walls = new())
+        public MazeTile(int2 pos, int index)
         {
             Pos = pos;
             Index = index;
-
-            //Default values
-            Walls = walls;
+            Walls = Walls.Full;
+            PreviousTile = -1;
+        }
+        
+        /// <summary> Connect this tile to the previous. </summary>
+        /// <param name="sourceDirection"> The direction to move from the source. </param>
+        public void OpenTile(Walls.Sides sourceDirection, int sourceIndex)
+        {
+            PreviousTile = sourceIndex;
+            Walls.RemoveWall(Walls.GetOpposite(sourceDirection));
         }
 
         public Vector3Int ToVec3Int() => new(Pos.x, Pos.y);

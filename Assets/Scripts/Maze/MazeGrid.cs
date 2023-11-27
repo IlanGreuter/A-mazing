@@ -8,7 +8,7 @@ namespace IlanGreuter.Maze
     {
         [SerializeField] private Tilemap tilemap;
         private MazeTile[] maze;
-        private Vector2Int mazeSize;
+        private Vector2Int mazeSize = new(5, 5);
 
         [Header("Tile Sprites")]
         [SerializeField] private TileBase full;
@@ -16,25 +16,29 @@ namespace IlanGreuter.Maze
 
         private void Awake()
         {
-            CreateGrid(new(5, 5));
+            CreateGrid(mazeSize);
         }
 
         private void CreateGrid(Vector2Int size)
         {
+            //Expand the tilemap, then fill the area (plus a border around it) with blocks
+            tilemap.SetTile(new(-1, -1), full);
+            tilemap.SetTile(new(size.x + 1, size.y + 1), full);
+            tilemap.BoxFill(new(0, 0), full, -1, -1, size.x + 1, size.y + 1);
+            
+            //Instantiate the grid
             maze = new MazeTile[size.x * size.y];
-            Walls w = new Walls(15);
-            w.RemoveWall(Walls.Sides.Bottom);
-            w.RemoveWall(Walls.Sides.Right);
-
             for (int i = 0; i < maze.Length; i++)
             {
                 int2 pos = new(i % size.y, i / size.y);
                 maze[i] = new MazeTile(pos, i);
-                UpdateSpriteVisual(new(pos.x, pos.y), w);
             }
         }
 
-        private void UpdateSpriteVisual(Vector3Int tilePos, Walls walls)
+        private void UpdateTileVisual(MazeTile mazeTile) =>
+            UpdateTileVisual(mazeTile.Pos.ToVec3Int(), mazeTile.Walls);
+
+        private void UpdateTileVisual(Vector3Int tilePos, Walls walls)
         {
             switch (walls.CountWalls())
             {
