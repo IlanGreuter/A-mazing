@@ -12,9 +12,9 @@ namespace IlanGreuter.Maze
         /// <summary> The index in the algorithm's list this tile represents </summary>
         public readonly int Index;
 
-        private byte Walls;
+        public Walls Walls { get; private set; }
 
-        public MazeTile(int2 pos, int index, byte walls = byte.MaxValue)
+        public MazeTile(int2 pos, int index, Walls walls = new())
         {
             Pos = pos;
             Index = index;

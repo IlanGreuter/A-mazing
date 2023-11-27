@@ -227,13 +227,14 @@ GameObject:
   - component: {fileID: 555440742}
   - component: {fileID: 555440741}
   - component: {fileID: 555440743}
+  - component: {fileID: 555440744}
   m_Layer: 0
   m_Name: Tilemap_Sq
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &555440740
 Transform:
   m_ObjectHideFlags: 0
@@ -536,18 +537,18 @@ Tilemap:
       e00: 0
       e01: 0
       e02: 0
-      e03: 9.552314e+9
+      e03: 6.1757838e-24
       e10: 0
       e11: 0
       e12: 0
-      e13: 2.65e-43
+      e13: 3.5e-43
       e20: 0
       e21: 0
-      e22: 0
+      e22: 3.0841213e+18
       e23: 0
       e30: 0
       e31: 0
-      e32: 0
+      e32: 4.5904e-41
       e33: 0
   - m_RefCount: 1
     m_Data:
@@ -655,7 +656,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 555440739}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 50a25109b08cc144ca54adf86f9d6222, type: 3}
   m_Name: 
@@ -663,7 +664,26 @@ MonoBehaviour:
   tile: {fileID: 11400000, guid: 8503dfef47f05f54ca3d9b90f2cb308e, type: 2}
   tilemap: {fileID: 555440742}
   hoveredTile: {x: 0, y: 0, z: 0}
-  b: 1
+  b: 0
+--- !u!114 &555440744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 555440739}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a51b4aab3adebb45b7fe6afa5360b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tilemap: {fileID: 555440742}
+  basic: {fileID: 11400000, guid: ce2e8b7e54a5ff8478c0af185937c777, type: 2}
+  end: {fileID: 11400000, guid: fd4b7250db3e67d4780e454796df725c, type: 2}
+  straight: {fileID: 11400000, guid: ea09deceacb2f5b4dbe7883278ef802c, type: 2}
+  corner: {fileID: 11400000, guid: 472b46617bdbc9549b774c1dd02ba93c, type: 2}
+  split: {fileID: 11400000, guid: 9224e1644a7a4344282201a743065a5b, type: 2}
+  plus: {fileID: 11400000, guid: 4b648f13f0b03ae47994f6b65f80d626, type: 2}
 --- !u!1 &969015671
 GameObject:
   m_ObjectHideFlags: 0
@@ -1191,7 +1211,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1496055383
 Transform:
   m_ObjectHideFlags: 0

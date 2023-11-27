@@ -3,7 +3,15 @@ guid: 6a51b4aab3adebb45b7fe6afa5360b86
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - tilemap: {instanceID: 0}
+  - tile: {instanceID: 0}
+  - basic: {fileID: 11400000, guid: ce2e8b7e54a5ff8478c0af185937c777, type: 2}
+  - end: {fileID: 11400000, guid: fd4b7250db3e67d4780e454796df725c, type: 2}
+  - straight: {fileID: 11400000, guid: ea09deceacb2f5b4dbe7883278ef802c, type: 2}
+  - corner: {fileID: 11400000, guid: 472b46617bdbc9549b774c1dd02ba93c, type: 2}
+  - split: {fileID: 11400000, guid: 9224e1644a7a4344282201a743065a5b, type: 2}
+  - plus: {fileID: 11400000, guid: 4b648f13f0b03ae47994f6b65f80d626, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
