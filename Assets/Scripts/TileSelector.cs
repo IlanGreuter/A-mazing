@@ -34,5 +34,15 @@ namespace IlanGreuter
             Vector3 mousePosition = cam.ScreenToWorldPoint(Input.mousePosition);
             hoveredTile = tilemap.WorldToCell(mousePosition);
         }
+
+        private void SetTileWalls(Vector3Int pos, int walls)
+        {
+            //Up & down = I
+            //Left & Right = I rot90
+            //All 4 = +
+            //
+
+
+        }
     }
 }
