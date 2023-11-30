@@ -16,21 +16,22 @@ namespace IlanGreuter.Maze
         /// <summary> This tiles walls </summary>
         public Walls Walls;
 
+        public bool IsVisited;
+
         public MazeTile(int2 pos, int index)
         {
             Pos = pos;
             Index = index;
             Walls = Walls.Full;
             PreviousTile = -1;
+            IsVisited = false;
         }
         
         /// <summary> Connect this tile to the previous. </summary>
-        /// <param name="sourceDirection"> The direction to move from the source. </param>
-        public void OpenTile(Walls.Sides sourceDirection, int sourceIndex)
-        {
-            PreviousTile = sourceIndex;
-            Walls.RemoveWall(Walls.GetOpposite(sourceDirection));
-        }
+        /// <param name="sourceDirection"> The direction to move from the source to reach this tile. </param>
+        /// <param name="sourceIndex"> The tile from which this tile is opened </param>
+        public void OpenWall(Walls.Sides wall) =>
+            Walls.RemoveWall(wall);
 
         public Vector3Int ToVec3Int() => new(Pos.x, Pos.y);
     }

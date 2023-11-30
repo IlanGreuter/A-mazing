@@ -1,3 +1,5 @@
+using IlanGreuter.Maze.Generation;
+using System;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -7,8 +9,9 @@ namespace IlanGreuter.Maze
     public class MazeGrid : MonoBehaviour
     {
         [SerializeField] private Tilemap tilemap;
-        private MazeTile[] maze;
+        private MazeGeneratorBase generator;
         private Vector2Int mazeSize = new(5, 5);
+        private Vector3Int startPoint, endPoint;
 
         [Header("Tile Sprites")]
         [SerializeField] private TileBase full;
@@ -25,14 +28,13 @@ namespace IlanGreuter.Maze
             tilemap.SetTile(new(-1, -1), full);
             tilemap.SetTile(new(size.x + 1, size.y + 1), full);
             tilemap.BoxFill(new(0, 0), full, -1, -1, size.x + 1, size.y + 1);
-            
-            //Instantiate the grid
-            maze = new MazeTile[size.x * size.y];
-            for (int i = 0; i < maze.Length; i++)
-            {
-                int2 pos = new(i % size.y, i / size.y);
-                maze[i] = new MazeTile(pos, i);
-            }
+        }
+
+        private void CreateGenerator(Vector2Int size)
+        {
+            //generator = new PrimMazeGenerator(, size.ToInt2(), startPoint, endPoint);
+
+            throw new NotImplementedException();
         }
 
         private void UpdateTileVisual(MazeTile mazeTile) =>

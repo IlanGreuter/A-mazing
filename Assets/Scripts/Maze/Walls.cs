@@ -45,6 +45,10 @@ namespace IlanGreuter.Maze
             return count;
         }
 
+        /// <summary> Whether this has any walls </summary>
+        public bool HasWalls() =>
+            sides > 0;
+
         /// <summary> Is this side and the one opposite open? </summary>
         public bool IsStraight(Sides side) => !HasWallInDirection(side) && !HasWallInDirection((int)Mathf.Repeat((int)side + 2, 4));
         /// <summary> Is this side and a side next to it open </summary>
