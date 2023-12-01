@@ -22,28 +22,27 @@ namespace IlanGreuter.Maze.Generation
             MazeSize = mazeSize;
             Start = start;
             End = end;
+
+            currentTile = start;
         }
 
         /// <summary> Run one iteration of this algorithm's loop </summary>
-        public abstract void Step();
+        /// <returns> Returns the index of the tile that was last assessed </returns>
+        public abstract int Step();
 
         /// <summary> Is this tile within the tilemap? </summary>
         public bool IsTileValid(int2 tilePos) =>
             IsTileValid(tilePos.y * MazeSize.x + tilePos.x);
         /// <summary> Is this tile within the tilemap? </summary>
         public bool IsTileValid(int tileIndex) =>
-           tileIndex > 0 && tileIndex < maze.Length;
-
-        // Since we use a 1D array to represent a 2D grid,
-        // We use the following logic to move through the grid
-        // Moving horizontally requires adding -1 or 1 to move left or right
-        // Moving vertically requres adding -w or w to move up or down, where w is the width of the 2d grid.
+           tileIndex >= 0 && tileIndex < maze.Length;
+        
         /// <summary> Get a list of all neighbours of the tile that would be on the grid </summary>
-        internal IEnumerable<(int, Walls.Sides)> GetNeighbours(int tile)
+        public IEnumerable<(int, Walls.Sides)> GetNeighbours(int tile)
         {
-            if (tile % MazeSize.x == 0) //If not first column
+            if (tile % MazeSize.x != 0) //If not first column
                 yield return (tile - 1, Walls.Sides.Left);
-            if (tile % MazeSize.x == (MazeSize.x - 1)) //If not last Column
+            if (tile % MazeSize.x != (MazeSize.x - 1)) //If not last Column
                 yield return (tile + 1, Walls.Sides.Right);
 
             if (tile >= MazeSize.x) //If not first row

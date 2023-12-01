@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using Unity.Mathematics;
 
 namespace IlanGreuter.Maze.Generation
@@ -10,20 +9,22 @@ namespace IlanGreuter.Maze.Generation
 
         public PrimMazeGenerator(MazeTile[] maze, int2 mazeSize, int start, int end) : base(maze, mazeSize, start, end)
         {
-            adjecentTiles.Add(currentTile);
+            maze[currentTile].IsVisited = true;
+            ExpandTile(currentTile);
         }
 
-        public override void Step()
+        public override int Step()
         {
             UpdateCurrent();
             ConnectTileToMaze(currentTile);
             ExpandTile(currentTile);
+            return currentTile;
         }
 
         //Connect the tile to another tile that is already part of the maze
         private void ConnectTileToMaze(int tile)
         {
-            List<(int, Walls.Sides)> neighbours = new List<(int, Walls.Sides)>(4);
+            List<(int, Walls.Sides)> neighbours = new(4);
 
             //Find all neighbour tiles that have already been visited
             foreach (var neighbour in GetNeighbours(tile))
@@ -50,8 +51,9 @@ namespace IlanGreuter.Maze.Generation
         //Add each neighbour to the list of tiles we can access
         private void ExpandTile(int tileIndex)
         {
-            foreach (int neighbour in GetNeighbours(tileIndex).Select(n => n.Item1))
-                if (IsTileValid(neighbour) && !maze[neighbour].IsVisited)
+            //TODO: use hashmap when inserting instead of checking if in list
+            foreach (var (neighbour, _) in GetNeighbours(tileIndex))
+                if (IsTileValid(neighbour) && !maze[neighbour].IsVisited && !adjecentTiles.Contains(neighbour))
                     adjecentTiles.Add(neighbour);
         }
     }
