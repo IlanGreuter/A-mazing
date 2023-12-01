@@ -10,6 +10,7 @@ namespace IlanGreuter.Maze.Generation
         public PrimMazeGenerator(MazeTile[] maze, int2 mazeSize, int start, int end) : base(maze, mazeSize, start, end)
         {
             maze[currentTile].IsVisited = true;
+            processedTiles++;
             ExpandTile(currentTile);
         }
 
