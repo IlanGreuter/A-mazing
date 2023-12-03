@@ -10,7 +10,7 @@ namespace IlanGreuter.Maze
     {
         [SerializeField] private Tilemap tilemap;
         private MazeGeneratorBase generator;
-        public Vector2Int Size = new(5, 5);
+        private Vector2Int size = new(5, 5);
         [SerializeField] private Vector2Int offset;
         public Vector3Int startPoint, endPoint;
 
@@ -19,13 +19,16 @@ namespace IlanGreuter.Maze
         private void Awake()
         {
             tileBuilder = GetComponent<TilePlacer>();
-            CreateGrid(Size);
-            CreateGenerator(Size);
-
+            StartGeneration();
             while (!generator.HasFinished)
                 ProgressGeneration();
         }
 
+        public void StartGeneration()
+        {
+            CreateGrid(size);
+            CreateGenerator(size);
+        }
 
         private void CreateGrid(Vector2Int size)
         {
