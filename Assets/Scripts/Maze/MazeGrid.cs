@@ -10,31 +10,28 @@ namespace IlanGreuter.Maze
     {
         [SerializeField] private Tilemap tilemap;
         private MazeGeneratorBase generator;
-        private Vector2Int size = new(5, 5);
         [SerializeField] private Vector2Int offset;
-        public Vector3Int startPoint, endPoint;
+        private Vector3Int startPoint, endPoint;
 
         private TilePlacer tileBuilder;
 
         private void Awake()
         {
             tileBuilder = GetComponent<TilePlacer>();
-            StartGeneration();
-            while (!generator.HasFinished)
-                ProgressGeneration();
         }
 
-        public void StartGeneration()
+        public void StartGeneration(Vector2Int size)
         {
             CreateGrid(size);
             CreateGenerator(size);
         }
 
-        private void CreateGrid(Vector2Int size)
+        public void CreateGrid(Vector2Int size)
         {
+            tilemap.ClearAllTiles();
             tileBuilder.tilemap = tilemap;
             //Offset and increase size to add a border around the maze
-            tileBuilder.FillBlock(new(offset.x -1,offset.y -1), new(size.x + 2, size.y + 2));
+            tileBuilder.FillBlock(new(offset.x - 1, offset.y - 1), new(size.x + 2, size.y + 2));
         }
 
         private void CreateGenerator(Vector2Int size)
@@ -54,13 +51,25 @@ namespace IlanGreuter.Maze
             generator = new PrimMazeGenerator(maze, size.ToInt2(), startIndex, endIndex);
         }
 
+        public void GenerateForIterations(int iterations)
+        {
+            //Clamp iterations to RemainingTiles to reduce useless for-loop iterations
+            if (iterations < 0 || iterations > generator.RemainingTiles)
+                iterations = generator.RemainingTiles;
+
+            for (int i = 0; i < iterations; i++)
+                ProgressGeneration();
+        }
+
         [ContextMenu("Step")]
         private void ProgressGeneration()
         {
-            int toUpdate = generator.Step();
-            tileBuilder.UpdateTileVisual(generator.maze[toUpdate]);
-            foreach (var (n, _) in generator.GetNeighbours(toUpdate))
-                tileBuilder.UpdateTileVisual(generator.maze[n]);
+            if (generator == null || generator.HasFinished)
+                return;
+
+            var (current, connectedTo) = generator.Step();
+            tileBuilder.UpdateTileVisual(generator.maze[current]);
+            tileBuilder.UpdateTileVisual(generator.maze[connectedTo]);
         }
     }
 }

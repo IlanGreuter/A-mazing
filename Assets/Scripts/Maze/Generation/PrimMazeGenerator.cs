@@ -14,16 +14,16 @@ namespace IlanGreuter.Maze.Generation
             ExpandTile(currentTile);
         }
 
-        public override int Step()
+        public override (int, int) Step()
         {
             UpdateCurrent();
-            ConnectTileToMaze(currentTile);
+            int connectedTo = ConnectTileToMaze(currentTile);
             ExpandTile(currentTile);
-            return currentTile;
+            return (currentTile, connectedTo);
         }
 
         //Connect the tile to another tile that is already part of the maze
-        private void ConnectTileToMaze(int tile)
+        private int ConnectTileToMaze(int tile)
         {
             List<(int, Walls.Sides)> neighbours = new(4);
 
@@ -38,6 +38,7 @@ namespace IlanGreuter.Maze.Generation
             maze[tile].PreviousTile = index;
             maze[index].OpenWall(Walls.GetOpposite(wall));
             processedTiles++;
+            return index;
         }
 
         //Draws a new currentTile from the list of adjecentTiles

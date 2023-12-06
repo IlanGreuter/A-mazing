@@ -8,11 +8,13 @@ namespace IlanGreuter.Maze.Generation
         public readonly MazeTile[] maze;
         public readonly int2 MazeSize;
 
-        internal readonly int Start, End;
-        internal int currentTile;
-        internal int processedTiles;
+        protected readonly int Start, End;
+        protected int currentTile;
+        protected int processedTiles;
 
-        /// <summary> Has the algorithm finished completely? </summary>
+        public int CurrentTile => currentTile;
+        public int RemainingTiles =>
+            maze.Length - processedTiles;
         public bool HasFinished =>
             processedTiles == maze.Length;
 
@@ -27,8 +29,9 @@ namespace IlanGreuter.Maze.Generation
         }
 
         /// <summary> Run one iteration of this algorithm's loop </summary>
-        /// <returns> Returns the index of the tile that was last assessed </returns>
-        public abstract int Step();
+        /// <returns> Tuple of 2 indexes. The first is of the tile that was last connected,
+        /// the second is of the tile the first was conected to. </returns>
+        public abstract (int, int) Step();
 
         /// <summary> Is this tile within the tilemap? </summary>
         public bool IsTileValid(int2 tilePos) =>
