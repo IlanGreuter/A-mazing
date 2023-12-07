@@ -1,3 +1,5 @@
+using IlanGreuter.Maze;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -5,27 +7,16 @@ namespace IlanGreuter
 {
     public class TileSelector : MonoBehaviour
     {
-        [SerializeField] private TileBase tile;
+        [SerializeField] private MazeGrid maze;
         [SerializeField] private Tilemap tilemap;
 
         [SerializeField] private Vector3Int hoveredTile;
+        [SerializeField] Vector3[] path;
+        [SerializeField] private LineRenderer lineRenderer;
         private Camera cam;
 
-        public bool b;
         private void Awake()
         {
-            if (b)
-            {
-                for (Vector3Int pos = new(-5, -5, 0); pos.y != 5; pos.y++)
-                {
-                    for (pos.x = -5; pos.x < 5; pos.x += 1)
-                    {
-                        tilemap.SetTile(pos, tile);
-                        tilemap.SetColor(pos, ((pos.x) & 1) > 0 ? Color.gray : Color.white);
-                    }
-                }
-            }
-
             cam = Camera.main;
         }
 
@@ -33,6 +24,13 @@ namespace IlanGreuter
         {
             Vector3 mousePosition = cam.ScreenToWorldPoint(Input.mousePosition);
             hoveredTile = tilemap.WorldToCell(mousePosition);
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                path = maze.GetPath(hoveredTile).Select(vInt => tilemap.GetCellCenterWorld(vInt)).ToArray();
+                lineRenderer.positionCount = path.Length;
+                lineRenderer.SetPositions(path);
+            }
         }
     }
 }

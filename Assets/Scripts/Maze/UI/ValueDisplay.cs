@@ -1,16 +1,16 @@
 using TMPro;
 using UnityEngine;
 
-namespace IlanGreuter.UI
+namespace IlanGreuter.Maze.UI
 {
-
     public class ValueDisplay : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI textDisplay;
 
+        /// <summary> Set the displayed value. Will only display whole numbers </summary>
         public void SetDisplayValue(float value)
         {
-            textDisplay.text = value.ToString();
+            textDisplay.text = value.ToString("0");
         }
 
         private void Awake()

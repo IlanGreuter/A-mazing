@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Mathematics;
+using UnityEngine;
 
 namespace IlanGreuter.Maze.Generation
 {
@@ -49,9 +51,28 @@ namespace IlanGreuter.Maze.Generation
                 yield return (tile + 1, Walls.Sides.Right);
 
             if (tile >= MazeSize.x) //If not first row
-                yield return (tile - MazeSize.x, Walls.Sides.Top);
+                yield return (tile - MazeSize.x, Walls.Sides.Bottom);
             if (tile < (maze.Length - MazeSize.x)) //If not last row
-                yield return (tile + MazeSize.x, Walls.Sides.Bottom);
+                yield return (tile + MazeSize.x, Walls.Sides.Top);
         }
+
+        public List<Vector3Int> GetPath(Vector3Int target)
+        {
+            if (!HasFinished || !IsTileValid(target.ToInt2())) return new();
+
+            int next = ToIndex(target);
+            List<Vector3Int> path = new() { target };
+            while (IsTileValid(next) && next != Start)
+            {
+                next = maze[next].PreviousTile;
+                path.Add(maze[next].ToVec3Int());
+            }
+
+            path.Reverse();
+            return path;
+        }
+
+        private int ToIndex(Vector3Int position) =>
+            position.y * MazeSize.x + position.x;
     }
 }

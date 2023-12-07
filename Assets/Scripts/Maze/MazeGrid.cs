@@ -1,4 +1,5 @@
 using IlanGreuter.Maze.Generation;
+using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -11,7 +12,7 @@ namespace IlanGreuter.Maze
         [SerializeField] private Tilemap tilemap;
         private MazeGeneratorBase generator;
         [SerializeField] private Vector2Int offset;
-        private Vector3Int startPoint, endPoint;
+        [SerializeField] private Vector3Int startPoint, endPoint;
 
         private TilePlacer tileBuilder;
 
@@ -44,7 +45,7 @@ namespace IlanGreuter.Maze
             MazeTile[] maze = new MazeTile[size.x * size.y];
             for (int i = 0; i < maze.Length; i++)
             {
-                int2 pos = new(i % size.x, size.y - 1 - (i / size.x));
+                int2 pos = new(i % size.x, i / size.x);
                 maze[i] = new MazeTile(pos + posOffset, i);
             }
 
@@ -59,6 +60,12 @@ namespace IlanGreuter.Maze
 
             for (int i = 0; i < iterations; i++)
                 ProgressGeneration();
+        }
+
+        public List<Vector3Int> GetPath(Vector3Int endPoint)
+        {
+            if (generator == null) return new();
+            return generator.GetPath(endPoint);
         }
 
         [ContextMenu("Step")]
