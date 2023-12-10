@@ -41,7 +41,7 @@ namespace IlanGreuter.Maze.Generation
         /// <summary> Is this tile within the tilemap? </summary>
         public bool IsTileValid(int tileIndex) =>
            tileIndex >= 0 && tileIndex < maze.Length;
-        
+
         /// <summary> Get a list of all neighbours of the tile that would be on the grid </summary>
         public IEnumerable<(int, Walls.Sides)> GetNeighbours(int tile)
         {
@@ -56,12 +56,12 @@ namespace IlanGreuter.Maze.Generation
                 yield return (tile + MazeSize.x, Walls.Sides.Top);
         }
 
-        public List<Vector3Int> GetPath(Vector3Int target)
+        public List<Vector3Int> GetPath(Vector3Int cell)
         {
-            if (!HasFinished || !IsTileValid(target.ToInt2())) return new();
+            if (!HasFinished || !IsTileValid(cell.ToInt2())) return new();
 
-            int next = ToIndex(target);
-            List<Vector3Int> path = new() { target };
+            int next = ToIndex(cell);
+            List<Vector3Int> path = new() { cell };
             while (IsTileValid(next) && next != Start)
             {
                 next = maze[next].PreviousTile;
@@ -71,6 +71,11 @@ namespace IlanGreuter.Maze.Generation
             path.Reverse();
             return path;
         }
+
+        public MazeTile GetTile(Vector3Int cell) =>
+            GetTile(ToIndex(cell));
+        public MazeTile GetTile(int cellIndex) =>
+            maze[cellIndex];
 
         private int ToIndex(Vector3Int position) =>
             position.y * MazeSize.x + position.x;

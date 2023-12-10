@@ -9,7 +9,7 @@ namespace IlanGreuter.Maze
     [RequireComponent(typeof(TilePlacer))]
     public class MazeGrid : MonoBehaviour
     {
-        [SerializeField] private Tilemap tilemap;
+        public Tilemap Tilemap;
         private MazeGeneratorBase generator;
         [SerializeField] private Vector2Int offset;
         [SerializeField] private Vector3Int startPoint, endPoint;
@@ -29,8 +29,8 @@ namespace IlanGreuter.Maze
 
         public void CreateGrid(Vector2Int size)
         {
-            tilemap.ClearAllTiles();
-            tileBuilder.tilemap = tilemap;
+            Tilemap.ClearAllTiles();
+            tileBuilder.tilemap = Tilemap;
             //Offset and increase size to add a border around the maze
             tileBuilder.FillBlock(new(offset.x - 1, offset.y - 1), new(size.x + 2, size.y + 2));
         }
@@ -78,5 +78,8 @@ namespace IlanGreuter.Maze
             tileBuilder.UpdateTileVisual(generator.maze[current]);
             tileBuilder.UpdateTileVisual(generator.maze[connectedTo]);
         }
+
+        public MazeTile GetTile(Vector3Int cell) =>
+            generator.GetTile(cell);
     }
 }
