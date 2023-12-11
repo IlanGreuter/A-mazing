@@ -27,11 +27,10 @@ namespace IlanGreuter.Maze
             IsVisited = false;
         }
         
-        /// <summary> Connect this tile to the previous. </summary>
-        /// <param name="sourceDirection"> The direction to move from the source to reach this tile. </param>
-        /// <param name="sourceIndex"> The tile from which this tile is opened </param>
         public void OpenWall(Walls.Sides wall) =>
             Walls.RemoveWall(wall);
+        public void PlaceWall(Walls.Sides wall) =>
+            Walls.PlaceWall(wall);
 
         public Vector3Int ToVec3Int() => new(Pos.x, Pos.y);
     }
