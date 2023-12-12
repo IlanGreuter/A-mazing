@@ -1,6 +1,5 @@
 using IlanGreuter.Maze.Generation;
 using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -11,7 +10,8 @@ namespace IlanGreuter.Maze
     {
         public Tilemap Tilemap;
         private MazeGeneratorBase generator;
-        [SerializeField] private Vector3Int startPoint, endPoint;
+        [SerializeField] private Vector3Int startPoint;
+        public Algorithms UsedGenerationAlgoritm;
 
         private TilePlacer tileBuilder;
 
@@ -20,13 +20,15 @@ namespace IlanGreuter.Maze
             tileBuilder = GetComponent<TilePlacer>();
         }
 
+        /// <summary> Initializes the grid and the generation </summary>
         public void StartGeneration(Vector2Int size)
         {
             CreateGrid(size);
             CreateGenerator(size);
         }
 
-        public void CreateGrid(Vector2Int size)
+        /// <summary> Initializes the grid </summary>
+        private void CreateGrid(Vector2Int size)
         {
             Tilemap.ClearAllTiles();
             tileBuilder.tilemap = Tilemap;
@@ -37,31 +39,37 @@ namespace IlanGreuter.Maze
         private void CreateGenerator(Vector2Int size)
         {
             int startIndex = startPoint.x + (startPoint.y * size.x);
-            int endIndex = endPoint.x + (endPoint.y * size.x);
 
-            //Instantiate the grid
-            MazeTile[] maze = new MazeTile[size.x * size.y];
-            for (int i = 0; i < maze.Length; i++)
+            switch (UsedGenerationAlgoritm)
             {
-                int2 pos = new(i % size.x, i / size.x);
-                maze[i] = new MazeTile(pos, i);
+                case Algorithms.Prim:
+                    generator = new PrimMazeGenerator(size.ToInt2(), startIndex);
+                    break;
+                case Algorithms.Wilson:
+                    generator = new WilsonMazeGenerator(size.ToInt2(), startIndex);
+                    break;
+                default:
+                    throw new System.NotImplementedException();
             }
-
-            generator = new WilsonMazeGenerator(maze, size.ToInt2(), startIndex, endIndex);
         }
 
+        /// <summary> Run this many iterations of the maze generation algorithm </summary>
         public void GenerateForIterations(int iterations)
         {
             for (int i = 0; (i < iterations && !generator.HasFinished) || iterations < 0; i++)
                 ProgressGeneration();
         }
 
+        /// <summary> Get the path from the start of the maze to this position </summary>
         public List<Vector3Int> GetPath(Vector3Int endPoint)
         {
-            if (generator == null || !generator.IsTileValid(endPoint.ToInt2())) return new();
+            if (generator == null || !generator.IsTileValid(endPoint.ToInt2()))
+                return new();
+
             return generator.GetPath(endPoint);
         }
 
+        /// <summary> Do one iteration of the maze generator, and update the tiles </summary>
         [ContextMenu("Step")]
         private void ProgressGeneration()
         {
@@ -72,7 +80,15 @@ namespace IlanGreuter.Maze
                 tileBuilder.UpdateTileVisual(generator.maze[change]);
         }
 
+        /// <summary> Get the tile data at this position </summary>
         public MazeTile GetTile(Vector3Int cell) =>
             generator.GetTile(cell);
+
+        public enum Algorithms
+        {
+            Undefined,
+            Prim,
+            Wilson
+        }
     }
 }

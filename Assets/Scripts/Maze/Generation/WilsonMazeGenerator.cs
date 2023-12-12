@@ -1,22 +1,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Mathematics;
-using UnityEngine;
 
 namespace IlanGreuter.Maze.Generation
 {
-    [System.Serializable]
     public class WilsonMazeGenerator : MazeGeneratorBase
     {
         private readonly List<int> currentWalk = new();
 
-        public WilsonMazeGenerator(MazeTile[] maze, int2 mazeSize, int start, int end) : base(maze, mazeSize, start, end)
+        public WilsonMazeGenerator(int2 mazeSize, int start) : base(mazeSize, start)
         {
             maze[currentTile].IsVisited = true;
         }
 
         public override List<int> Step()
         {
+            //If we don't have a walk currently going on, we can start a new walk
             if (currentWalk.Count == 0)
             {
                 currentTile = FindStartingPoint();
@@ -25,7 +24,6 @@ namespace IlanGreuter.Maze.Generation
 
                 maze[currentTile].IsVisited = true;
                 currentWalk.Add(currentTile);
-                Debug.Log($"Starting walk at {currentTile}");
             }
 
             RandomWalk();
@@ -35,7 +33,11 @@ namespace IlanGreuter.Maze.Generation
         /// <summary> Find the first unvisited tile to start a random walk from </summary>
         private int FindStartingPoint()
         {
-            for (int i = maze.Length - connectedTiles - 1; connectedTiles < maze.Length; connectedTiles++, i--)
+            //To find a starting point, we essentially check every node,
+            //and return the first one we find that we havent visited.
+            //If we have visited a tile, we count it as processed and continue
+
+            for (int i = maze.Length - processedTiles - 1; processedTiles < maze.Length; processedTiles++, i--)
                 if (!maze[i].IsVisited)
                     return i;
 
@@ -89,7 +91,7 @@ namespace IlanGreuter.Maze.Generation
                     }
                 }
                 //else, connect to maze and end random walk
-                else 
+                else
                 {
                     changedTiles.Add(currentTile);
                     changedTiles.Add(neighbour);

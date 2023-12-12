@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Drawing;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -9,26 +10,31 @@ namespace IlanGreuter.Maze.Generation
         public readonly MazeTile[] maze;
         public readonly int2 MazeSize;
 
-        protected readonly int Start, End;
+        protected readonly int Start;
         protected int currentTile;
-        protected int connectedTiles;
+        protected int processedTiles;
 
         protected List<int> changedTiles = new();
 
         public int CurrentTile => currentTile;
         public int RemainingTiles =>
-            maze.Length - connectedTiles;
+            maze.Length - processedTiles;
         public bool HasFinished =>
-            connectedTiles >= maze.Length;
+            processedTiles >= maze.Length;
 
-        public MazeGeneratorBase(MazeTile[] grid, int2 mazeSize, int start, int end)
+        public MazeGeneratorBase(int2 mazeSize, int start)
         {
-            maze = grid;
             MazeSize = mazeSize;
             Start = start;
-            End = end;
-
             currentTile = start;
+
+            //Instantiate the grid
+            maze = new MazeTile[MazeSize.x * MazeSize.y];
+            for (int i = 0; i < maze.Length; i++)
+            {
+                int2 pos = new(i % MazeSize.x, i / MazeSize.x);
+                maze[i] = new MazeTile(pos, i);
+            }
         }
 
         /// <summary> Run one iteration of this algorithm's loop </summary>
@@ -53,6 +59,9 @@ namespace IlanGreuter.Maze.Generation
             path.Reverse();
             return path;
         }
+        //Note: As it is a perfect maze, which can be seen as a type of tree structure,
+        //finding the path between 2 points A and B can be done by getting the path from A to start to B
+        //Then we can remove all of the intersecting nodes and we have a path from A to B left
 
         /// <summary> Connect from one tile to another tile, removing the wall between </summary>
         /// <param name="connectFrom"> The tile to connect from </param>

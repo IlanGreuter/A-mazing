@@ -7,10 +7,10 @@ namespace IlanGreuter.Maze.Generation
     {
         private readonly List<int> adjecentTiles = new();
 
-        public PrimMazeGenerator(MazeTile[] maze, int2 mazeSize, int start, int end) : base(maze, mazeSize, start, end)
+        public PrimMazeGenerator(int2 mazeSize, int start) : base(mazeSize, start)
         {
             maze[currentTile].IsVisited = true;
-            connectedTiles = 1;
+            processedTiles = 1;
             ExpandTile(currentTile);
         }
 
@@ -35,7 +35,7 @@ namespace IlanGreuter.Maze.Generation
             //Connect a random visited neighbour
             (int index, Walls.Sides wall) = neighbours[UnityEngine.Random.Range(0, neighbours.Count)];
             ConnectTiles(tile, index, wall);
-            connectedTiles++;
+            processedTiles++;
 
             changedTiles.Clear();
             changedTiles.Add(tile);
