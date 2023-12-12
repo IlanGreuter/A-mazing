@@ -43,16 +43,15 @@ namespace IlanGreuter.Maze.Generation
             return -1;
         }
 
+        /// <summary> Randomly make a path, removing loops where they are found </summary>
         private void RandomWalk()
         {
-            //Pick a random from each neighbour, removing the previous step of the walk if there are multiple options
+            //Pick a random from each neighbour, removing the tile we just came from
             int lastWalk = currentWalk.Count > 1 ? currentWalk[^2] : -1;
             var neighbours = GetNeighbours(currentTile).Where(i => i.Item1 != lastWalk).ToList();
             var (neighbour, wall) = neighbours[UnityEngine.Random.Range(0, neighbours.Count)];
 
             changedTiles.Clear();
-            changedTiles.Add(currentTile);
-            changedTiles.Add(neighbour);
 
             //If not visited, connect it to current random walk path and continue
             if (!maze[neighbour].IsVisited)
@@ -61,18 +60,17 @@ namespace IlanGreuter.Maze.Generation
                 ConnectTiles(CurrentTile, neighbour, wall);
                 currentWalk.Add(neighbour);
                 currentTile = neighbour;
+
+                changedTiles.Add(currentTile);
+                changedTiles.Add(neighbour);
             }
             else
-            // 6  7  8
-            // 3  4  5
-            // 0  1  2
             {
                 //If the neighbour is in the current random walk, AKA we made a loop
                 //Backtrack to the start of the loop and continue
                 int index = currentWalk.IndexOf(neighbour);
                 if (index >= 0)
                 {
-                    Debug.Log($"Loop detected when connecting {currentTile} to {neighbour}");
                     currentTile = neighbour;
                     for (int i = currentWalk.Count - 1; i >= index; i--)
                     {
@@ -81,6 +79,7 @@ namespace IlanGreuter.Maze.Generation
                         currentTile = currentWalk[i];
                         changedTiles.Add(currentTile);
 
+                        //Since we want to continue the walk from the last tile, we do not fully reset that one
                         if (i != index)
                         {
                             maze[currentWalk[i]].IsVisited = false;
@@ -88,11 +87,14 @@ namespace IlanGreuter.Maze.Generation
                         }
                     }
                 }
-                else //else, connect to maze and end random walk
+                //else, connect to maze and end random walk
+                else 
                 {
-                    Debug.Log($"Connected to tile {neighbour}");
                     ConnectTiles(CurrentTile, neighbour, wall);
                     currentWalk.Clear();
+
+                    changedTiles.Add(currentTile);
+                    changedTiles.Add(neighbour);
                 }
             }
         }
