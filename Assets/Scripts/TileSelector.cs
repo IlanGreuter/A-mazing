@@ -8,10 +8,6 @@ namespace IlanGreuter
     public class TileSelector : MonoBehaviour
     {
         [SerializeField] private MazeGrid maze;
-        [SerializeField] private Tilemap tilemap;
-
-        [SerializeField] private Vector3Int hoveredTile;
-        [SerializeField] Vector3[] path;
         [SerializeField] private LineRenderer lineRenderer;
         private Camera cam;
 
@@ -22,12 +18,12 @@ namespace IlanGreuter
 
         private void Update()
         {
-            Vector3 mousePosition = cam.ScreenToWorldPoint(Input.mousePosition);
-            hoveredTile = tilemap.WorldToCell(mousePosition);
-
             if (Input.GetMouseButtonDown(0))
             {
-                path = maze.GetPath(hoveredTile).Select(vInt => tilemap.GetCellCenterWorld(vInt)).ToArray();
+                Vector3 mousePosition = cam.ScreenToWorldPoint(Input.mousePosition);
+                Vector3Int hoveredTile = maze.Tilemap.WorldToCell(mousePosition);
+
+                var path = maze.GetPath(hoveredTile).Select(vInt => maze.Tilemap.GetCellCenterWorld(vInt)).ToArray();
                 lineRenderer.positionCount = path.Length;
                 lineRenderer.SetPositions(path);
             }
