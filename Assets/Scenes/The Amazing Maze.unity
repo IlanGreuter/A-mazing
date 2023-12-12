@@ -584,7 +584,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Tilemap: {fileID: 555440742}
-  offset: {x: 0, y: 0}
   startPoint: {x: 0, y: 0, z: 0}
   endPoint: {x: 0, y: 0, z: 0}
 --- !u!114 &555440745
@@ -696,7 +695,7 @@ LineRenderer:
       atime6: 0
       atime7: 0
       m_Mode: 0
-      m_ColorSpace: 0
+      m_ColorSpace: -1
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     numCornerVertices: 0
@@ -1117,8 +1116,12 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4627608396776635912, guid: 69eb7d3343a3ced4383cc1c31856ee83, type: 3}
+      propertyPath: m_Value
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4627608396776635912, guid: 69eb7d3343a3ced4383cc1c31856ee83, type: 3}
       propertyPath: m_MinValue
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4680952343249844328, guid: 69eb7d3343a3ced4383cc1c31856ee83, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
@@ -1133,8 +1136,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1459375519}
     - target: {fileID: 4951172494686448408, guid: 69eb7d3343a3ced4383cc1c31856ee83, type: 3}
+      propertyPath: m_Value
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4951172494686448408, guid: 69eb7d3343a3ced4383cc1c31856ee83, type: 3}
       propertyPath: m_MinValue
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5233121828906589541, guid: 69eb7d3343a3ced4383cc1c31856ee83, type: 3}
       propertyPath: m_AnchorMax.x
