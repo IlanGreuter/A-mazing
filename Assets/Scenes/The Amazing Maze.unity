@@ -567,9 +567,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maze: {fileID: 555440744}
-  tilemap: {fileID: 555440742}
-  hoveredTile: {x: 0, y: 0, z: 0}
-  path: []
   lineRenderer: {fileID: 555440746}
 --- !u!114 &555440744
 MonoBehaviour:
@@ -585,7 +582,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Tilemap: {fileID: 555440742}
   startPoint: {x: 0, y: 0, z: 0}
-  endPoint: {x: 0, y: 0, z: 0}
+  UsedGenerationAlgoritm: 1
 --- !u!114 &555440745
 MonoBehaviour:
   m_ObjectHideFlags: 0

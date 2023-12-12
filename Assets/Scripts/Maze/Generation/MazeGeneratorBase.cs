@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Drawing;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -111,7 +110,8 @@ namespace IlanGreuter.Maze.Generation
 
         /// <summary> Is this tile within the tilemap? </summary>
         public bool IsTileValid(int2 tilePos) =>
-            IsTileValid(tilePos.y * MazeSize.x + tilePos.x);
+            tilePos.x < MazeSize.x && tilePos.y < MazeSize.y &&
+            tilePos.x >= 0 && tilePos.y >= 0;
         /// <summary> Is this tile within the tilemap? </summary>
         public bool IsTileValid(int tileIndex) =>
            tileIndex >= 0 && tileIndex < maze.Length;

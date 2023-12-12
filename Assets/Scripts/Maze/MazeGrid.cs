@@ -56,7 +56,7 @@ namespace IlanGreuter.Maze
         /// <summary> Run this many iterations of the maze generation algorithm </summary>
         public void GenerateForIterations(int iterations)
         {
-            for (int i = 0; (i < iterations && !generator.HasFinished) || iterations < 0; i++)
+            for (int i = 0; (i < iterations || iterations < 0) && !generator.HasFinished; i++)
                 ProgressGeneration();
         }
 
