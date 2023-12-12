@@ -35,9 +35,9 @@ namespace IlanGreuter.Maze.Generation
         /// <summary> Find the first unvisited tile to start a random walk from </summary>
         private int FindStartingPoint()
         {
-            for (; connectedTiles < maze.Length; connectedTiles++)
-                if (!maze[connectedTiles].IsVisited)
-                    return connectedTiles;
+            for (int i = maze.Length - connectedTiles - 1; connectedTiles < maze.Length; connectedTiles++, i--)
+                if (!maze[i].IsVisited)
+                    return i;
 
             //We have checked every single tile, which means we are done
             return -1;
