@@ -56,13 +56,14 @@ namespace IlanGreuter.Maze.Generation
             //If not visited, connect it to current random walk path and continue
             if (!maze[neighbour].IsVisited)
             {
+                changedTiles.Add(currentTile);
+                changedTiles.Add(neighbour);
+
                 maze[neighbour].IsVisited = true;
                 ConnectTiles(CurrentTile, neighbour, wall);
                 currentWalk.Add(neighbour);
                 currentTile = neighbour;
 
-                changedTiles.Add(currentTile);
-                changedTiles.Add(neighbour);
             }
             else
             {
@@ -90,11 +91,11 @@ namespace IlanGreuter.Maze.Generation
                 //else, connect to maze and end random walk
                 else 
                 {
-                    ConnectTiles(CurrentTile, neighbour, wall);
-                    currentWalk.Clear();
-
                     changedTiles.Add(currentTile);
                     changedTiles.Add(neighbour);
+
+                    ConnectTiles(CurrentTile, neighbour, wall);
+                    currentWalk.Clear();
                 }
             }
         }
