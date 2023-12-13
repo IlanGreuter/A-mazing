@@ -5,7 +5,7 @@ using UnityEngine.Tilemaps;
 
 namespace IlanGreuter
 {
-    public class TileSelector : MonoBehaviour
+    public class PathDrawer : MonoBehaviour
     {
         [SerializeField] private MazeGrid maze;
         [SerializeField] private LineRenderer lineRenderer;
