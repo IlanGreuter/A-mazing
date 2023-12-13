@@ -26,7 +26,19 @@ namespace IlanGreuter.Maze.UI
             sizePreview.transform.position = new Vector3(size.x, size.y) * 0.5f;
         }
 
-        private Vector2Int GetDesiredSize() 
+        private Vector2Int GetDesiredSize()
             => new((int)widthSlider.value, (int)heightSlider.value);
+
+
+        /// <summary> Set the generation algortithm </summary>
+        public void OnAlgorithmChange(int algorithm) 
+        {
+            mazeGrid.UsedGenerationAlgoritm = algorithm switch
+            {
+                0 => MazeGrid.Algorithms.Prim,
+                1 => MazeGrid.Algorithms.Wilson,
+                _ => throw new System.ArgumentException($"Algorithm {algorithm} was not found!"),
+            };
+        }
     }
 }
