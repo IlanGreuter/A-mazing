@@ -54,13 +54,16 @@ namespace IlanGreuter.Maze
         }
 
         /// <summary> Run this many iterations of the maze generation algorithm </summary>
-        public void GenerateForIterations(int iterations)
+        /// <returns> Whether the maze generation has been completed </returns>
+        public bool GenerateForIterations(int iterations)
         {
             if (generator == null)
-                return;
+                return false;
 
             for (int i = 0; (i < iterations || iterations < 0) && !generator.HasFinished; i++)
                 ProgressGeneration();
+
+            return generator.HasFinished;
         }
 
         /// <summary> Get the path from the start of the maze to this position </summary>
