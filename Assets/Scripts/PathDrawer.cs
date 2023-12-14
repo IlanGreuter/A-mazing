@@ -28,5 +28,10 @@ namespace IlanGreuter
                 lineRenderer.SetPositions(path);
             }
         }
+
+        public void ClearPath()
+        {
+            lineRenderer.positionCount = 0;
+        }
     }
 }
